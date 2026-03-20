@@ -10,23 +10,35 @@ public class Booking{
         private Client client;
         private Room room;
         private LocalDate checkInDate;
-        private LocalDate getCheckOutDate;
+        private LocalDate CheckOutDate;
         private int guestsCount;
         private double totalPrice;
         private String status;
 
-        public Booking(Client client, Room room, LocalDate checkInDate, LocalDate getCheckOutDate, int guestsCount) {
+        public Booking(Client client, Room room, LocalDate checkInDate, LocalDate CheckOutDate, int guestsCount) {
             this.client = client;
             this.room = room;
             this.checkInDate = checkInDate;
-            this.getCheckOutDate = getCheckOutDate;
+            this.CheckOutDate = CheckOutDate;
             this.guestsCount = guestsCount;
             this.totalPrice = calculateTotalPrice();
             this.status = "Активно";
         }
 
-        private double calculateTotalPrice() {
-            long nights = ChronoUnit.DAYS.between(checkInDate, getCheckOutDate);
+    public LocalDate getCheckInDate() {
+        return checkInDate;
+    }
+
+    public LocalDate getCheckOutDate() {
+        return CheckOutDate;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    private double calculateTotalPrice() {
+            long nights = ChronoUnit.DAYS.between(checkInDate, CheckOutDate);
             return nights * room.getPricePerNight();
         }
     }

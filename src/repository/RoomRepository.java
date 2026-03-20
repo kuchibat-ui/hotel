@@ -49,8 +49,7 @@ public class RoomRepository {
     }
 
     /**
-     * метод принимает Room с новыми данными
-     *
+     * метод принимает Room с новыми данными     *
      * @param updateRoom  Room которую нужно обновить
      * @return возвращает true при успешном обновлении и false при неудачном
      */

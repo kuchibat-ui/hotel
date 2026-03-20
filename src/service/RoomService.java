@@ -9,11 +9,13 @@ public class RoomService {
     public RoomService() {
         this.roomRepository = new RoomRepository();
     }
+
     public Room addRoom(String roomNumber, String type, double pricePerNight){
         if (roomRepository.findByRoomNumber(roomNumber).isPresent()){
             System.out.println("Ошибка: Комната с таким номером уже существует!");
             return null;
         }
+        
         Room room = new Room(roomNumber,type,pricePerNight);
         return roomRepository.save(room);
     }

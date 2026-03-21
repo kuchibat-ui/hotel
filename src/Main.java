@@ -1,3 +1,4 @@
+import model.Client;
 import service.RoomService;
 
 import java.util.Scanner;
@@ -8,6 +9,12 @@ public class Main {
     static RoomService roomService = new RoomService();
 
     public static void main(String[] args) {
+
+
+
+
+
+
         while (true) {
             printMainMenu();
             int choice = scanner.nextInt();

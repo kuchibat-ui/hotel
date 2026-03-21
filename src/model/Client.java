@@ -4,14 +4,16 @@ public class Client {
 
     private static int nextId = 1;
     private int id;
-    private String fullName;
+    private String name;
+    private String lastname;
     private String phone;
     private String passport;
     private String email;
 
-    public Client(String fullName, String email,  String passport, String phone) {
+    public Client( String lastname, String name, String email,  String passport, String phone) {
+        this.lastname = lastname;
         this.email = email;
-        this.fullName = fullName;
+        this.name = name;
         this.passport = passport;
         this.phone = phone;
         this.id = nextId++;
@@ -25,8 +27,8 @@ public class Client {
         return id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getName() {
+        return name;
     }
 
     public String getPassport() {
@@ -37,6 +39,14 @@ public class Client {
         return phone;
     }
 
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
     public void setPhone(String phone) {
         this.phone = phone;
     }
@@ -45,8 +55,8 @@ public class Client {
         this.passport = passport;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setName(String fullName) {
+        this.name = fullName;
     }
 
     public void setEmail(String email) {

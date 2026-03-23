@@ -1,13 +1,16 @@
 package service;
+// ТОЛЬКО ДЛЯ БИЗНЕС ЛОГИКИ
+// ЗАВИСИМОСТИ ПЕРЕДАЮТСЯ ЧЕРЕЗ КОНСТРУКТОРЫ
+// НЕ ДОЛЖЕН СОДЕРЖАТЬ SQL
+// ВЫЗЫВАЕТ REPOSITORY А НЕ НАОБОРОТ
+// ПОЛУАЕТ ОТ MAIN ЗАПРОСЫ
+// ВЗАИМОДЕЙСТВИЕ С ПОЛЬЗОВАТЕЛЕМ
+
 
 import model.Client;
-import model.Room;
 import repository.ClientRepository;
-import repository.DBconnect;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Optional;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ClientService {
@@ -31,91 +34,95 @@ public class ClientService {
      * @param phone
      * @return
      */
-    public Client addClients(String lastname, String name, String passport, String email, String phone) {
-        if (clientRepository.findByPassport(passport).isPresent()) {
-            System.out.println("Ошибка: данный клиент уже есть в списке");
-            return null;
-        }
-        Client client = new Client(lastname, name, email, passport, phone);
-        return clientRepository.save(client);
-    }
+//    public void  addClients(String lastname, String name, String passport, String email, String phone) {
+//        if (clientRepository.findByPass(passport).isPresent()) {
+//            System.out.println("Ошибка: данный клиент уже есть в списке");
+//            return null;
+//        }
+//        Client client = new Client(lastname, name, email, passport, phone);
+//        return clientRepository.save(client);
+//    }
 
     /**
-     * Метод добавляет нового клиента в БД
+     * Метод добавляет нового клиента
      */
     public void save() {
-        String query = "INSERT INTO clients (lastname,name,email,passport,phone) VALUES (?,?,?,?,?)";
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("введите имя:");
+        String name = scanner.nextLine();
+        System.out.println("введите фамилию:");
+        String lastname = scanner.nextLine();
+        System.out.println("введите емайл:");
+        String email = scanner.nextLine();
+        System.out.println("введите паспорт:");
+        String passport = scanner.nextLine();
+        System.out.println("введите телефон:");
+        String phone = scanner.nextLine();
+        Client client = new Client(lastname, name, email, passport, phone);
+        clientRepository.saveRepo(client);
+    }
+
+    /**
+     * метод по поиску клиента по паспорту
+     */
+    public void findByPass(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите номер паспорта клиента: ");
+        String passport = scanner.nextLine();
         try {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("введите имя:");
-            String name = scanner.nextLine();
-            System.out.println("введите фамилию:");
-            String lastname = scanner.nextLine();
-            System.out.println("введите емайл:");
-            String email = scanner.nextLine();
-            System.out.println("введите паспорт:");
-            String passport = scanner.nextLine();
-            System.out.println("введите телефон:");
-            String phone = scanner.nextLine();
-
-            Connection conn = DBconnect.getConnection();
-
-
-            try (PreparedStatement ps = conn.prepareStatement(query)) {
-
-
-                ps.setString(1, lastname);
-                ps.setString(2, name);
-                ps.setString(3, email);
-                ps.setString(4, passport);
-                ps.setString(5, phone);
-                int rows = ps.executeUpdate();
-                if (rows > 0) {
-                    System.out.println("клиент " + lastname + " " + name + " успешно добавлен в БД");
-                    Client client = new Client(lastname,name,email,passport,phone);
-                    clientRepository.save(client);
-                } else {
-                    System.out.println(" клиент не добавлен в БД");
-                }
-
-            }
-
-
+            clientRepository.findByPass(passport);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-
     }
 
 
     /**
-     * Метод поиск клиента по паспорту
+     * метод для поиска клиента по id
      */
-    public void findByPassport() throws SQLException {
+    public void findById(){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("введите номер паспорта клиента для поиска ");
-        String passport = scanner.nextLine();
-        String query = "SELECT * FROM clients WHERE passport=? ";
-        Connection conn = DBconnect.getConnection();
-
-        PreparedStatement ps = conn.prepareStatement(query);
-        ps.setString(1, passport);                  //подстановка параметра passport в запро1с
-        ResultSet rs = ps.executeQuery();
-
-        while (rs.next()) {
-            int id = rs.getInt("id");
-            String lastname = rs.getString("lastname");
-            String name = rs.getString("name");
-            String email = rs.getString("email");
-            String pass = rs.getString("passport");
-
-            System.out.printf("\nID: %d,lastname: %s, name %s,  Email: %s, Passport: %s\n", id, lastname, name, email, pass);
+        System.out.println("Введите номер клиента: ");
+        String idClient = scanner.nextLine();
+        int id = Integer.parseInt(idClient) ;
+        try {
+            clientRepository.findById(id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * метод для вывода всех клиентов из базы данных
+     */
+    public void printToAllClients(){
+        try {
+            clientRepository.findAll();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * удаление клиента по ID
+     */
+    public void removeById(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите ID клиента ");
+        String id1 =scanner.nextLine();
+        int id = Integer.parseInt(id1);
+        clientRepository.delete(id);
+    }
+
+    /**
+     * удаление клиента по Фамилии
+     */
+    public void removeByLastname(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите фамилию ");
+        String lastName = scanner.nextLine();
+        clientRepository.deleteByLastname(lastName);
 
     }
 
 }
-
-
-
-

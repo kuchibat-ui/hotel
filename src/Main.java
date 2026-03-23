@@ -24,6 +24,9 @@ public class Main {
                 case 2:
                     manageClients();
                     break;
+                case 3:
+                    manageBooking();
+                    break;
             }
         }
     }
@@ -75,7 +78,8 @@ public class Main {
         System.out.println("1. Добавить нового клиента");
         System.out.println("2. Найти клиента по паспорту");
         System.out.println("3. Найти клиента по ID");
-        System.out.println("4. Вывести все данные клиентов");
+        System.out.println("4. Вывести всех клиентов");
+        System.out.println("5. Удалить клиента из базы ");
         System.out.println("5. Статистика");
         System.out.println("0. Выход");
         System.out.println("===============================");
@@ -86,15 +90,37 @@ public class Main {
                 clientService.save();
                 break;
             case 2:
-                try {
-                    clientService.findByPassport();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                clientService.findByPass();
+                break;
+            case 3:
+                clientService.findById();
+                break;
+            case 4:
+                clientService.printToAllClients();
+                case 5:
+                    manageDeleteClient();
+                    break;
+
             case 0:
                 return;
             default:
                 System.out.println("Такая функция ещё не реализована");
         }
+    }
+
+    private static void manageDeleteClient() {
+        System.out.println("1. Удалить клиента по ID ");
+        System.out.println("2. Удалить клиента по фамилии ");
+        int choice =scanner.nextInt();
+        switch (choice){
+            case 1:
+                clientService.removeById();
+            case 2:
+                clientService.removeByLastname();
+        }
+    }
+
+
+    private static void manageBooking() {
     }
 }

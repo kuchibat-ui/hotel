@@ -73,7 +73,7 @@ public class RoomRepository {
     public boolean delete(int id){
         return rooms.removeIf(room -> room.getId() == id); // для каждой Room в коллекции rooms
                                                            // сравнивает ее id с переданным id
-        // true если Room найдена и удалена, и false если такой Room нет
+                                                          // true если Room найдена и удалена, и false если такой Room нет
     }
 
     public void clear(){

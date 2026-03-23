@@ -1,19 +1,18 @@
 import model.Client;
+import repository.DBconnect;
+import service.ClientService;
 import service.RoomService;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
 
     static Scanner scanner = new Scanner(System.in);
     static RoomService roomService = new RoomService();
+    static ClientService clientService = new ClientService();
 
     public static void main(String[] args) {
-
-
-
-
-
 
         while (true) {
             printMainMenu();
@@ -22,11 +21,14 @@ public class Main {
                 case 1:
                     manageRooms();
                     break;
-                default:
-                    System.out.println("такая функция еще не реализована");
+                case 2:
+                    manageClients();
+                    break;
             }
         }
     }
+
+
 
 
     private static void printMainMenu() {
@@ -62,6 +64,37 @@ public class Main {
                 default:
                     System.out.println("Такая функция ещё не реализована");
             }
+        }
+    }
+
+
+    private static void manageClients() {
+        System.out.println("\n===============================");
+        System.out.println("     УПРАВЛЕНИЯ КЛИЕНТАМИ");
+        System.out.println("===============================");
+        System.out.println("1. Добавить нового клиента");
+        System.out.println("2. Найти клиента по паспорту");
+        System.out.println("3. Найти клиента по ID");
+        System.out.println("4. Вывести все данные клиентов");
+        System.out.println("5. Статистика");
+        System.out.println("0. Выход");
+        System.out.println("===============================");
+        int choice = scanner.nextInt();
+
+        switch (choice) {
+            case 1:
+                clientService.save();
+                break;
+            case 2:
+                try {
+                    clientService.findByPassport();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            case 0:
+                return;
+            default:
+                System.out.println("Такая функция ещё не реализована");
         }
     }
 }

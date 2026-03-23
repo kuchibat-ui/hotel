@@ -1,56 +1,25 @@
 package repository;
 
-import com.mysql.cj.conf.DatabaseUrlContainer;
 import model.Client;
-import model.Room;
 
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class ClientRepository {
     List<Client> clients = new ArrayList<>();
 
     /**
-     * метод добавляет клиента в базу данных и в List     *
+     * метод добавляет клиента  в List     *
      *
      * @param client
      * @return
      */
     public Client save(Client client) {
-        String query = "INSERT INTO clients (lastname,name,email,passport,phone) VALUES (?,?,?,?,?)";
-        try {
-
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("введите имя:");
-            String name = scanner.nextLine();
-            System.out.println("введите фамилию:");
-            String lastname = scanner.nextLine();
-            System.out.println("введите емайл:");
-            String email = scanner.nextLine();
-            System.out.println("введите паспорт:");
-            String passport = scanner.nextLine();
-            System.out.println("введите телефон:");
-            String phone = scanner.nextLine();
-
-            Connection conn = DBconnect.getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, client.getLastname());
-            ps.setString(2, client.getName());
-            ps.setString(3, client.getEmail());
-            ps.setString(4, client.getPassport());
-            ps.setString(5, client.getPhone());
-            ps.executeUpdate();
             clients.add(client);
             return client;
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 
@@ -75,18 +44,46 @@ public class ClientRepository {
     ;
 
     // поиск чувака по телефону
-    public Optional<Client> findBuPhone(String phone) {
+    public Optional<Client> findBuPhone(String phone) throws SQLException{
+
+        String query = "SELECT * FROM clients WHILE phone=? ";
+        Connection conn = DBconnect.getConnection();
+        Statement st = conn.createStatement();
+        PreparedStatement ps = conn.prepareStatement("clients");
+        ps.setString(1, phone);                  //подстановка параметра phone в запрос
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String lastname = rs.getString("lastname");
+            String name = rs.getString("name");
+            String email = rs.getString("email");
+            String pass = rs.getString("passport");
+
+            System.out.printf("\nID: %d,lastname: %s, name %s,  Email: %s, Passport: %s\n", id, lastname, name, email, pass);
+        }
+
+
+
         return clients.stream()
                 .filter(client -> client.getPhone().equals(phone))
                 .findFirst();
     }
 
-    //поиск чувака по паспорту
-    public Optional<Client> findBuPassport(String passport) {
-        return clients.stream()
+    /**
+     * поиск чувака по паспорту  возвращает Client
+     */
+
+
+        public Optional<Client> findByPassport(String passport){
+            return clients.stream()
                 .filter(client -> client.getPassport().equals(passport))
                 .findFirst();
-    }
+        }
+
+
+
+
 
 
     // удаляет чувака по id
@@ -95,13 +92,14 @@ public class ClientRepository {
     }
 
     //вывести весь список clients
-    public List<Client> getAllClients() {
-
+    public ArrayList<Client> getAllClients() {
         return new ArrayList<>(clients);
     }
 
+
     /**
      * получить все данные клиентов из базы данных     *
+     *
      * @return List
      */
     public List<Client> findAll() throws SQLException {
@@ -124,6 +122,7 @@ public class ClientRepository {
         }
         return new ArrayList<>(clients);
     }
+
 
     public boolean update(Client updateClient) {
         Optional<Client> existingClient = findById(updateClient.getId()); // вызов findById() найти Client с таким же id в clients

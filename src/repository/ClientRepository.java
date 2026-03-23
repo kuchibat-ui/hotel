@@ -128,7 +128,7 @@ public class ClientRepository {
         Optional<Client> existingClient = findById(updateClient.getId()); // вызов findById() найти Client с таким же id в clients
         if (existingClient.isPresent()) {                           //если Client с таким id существует, то
             Client client = existingClient.get();                   // извлекаем этот Client из clients
-            client.setName(updateClient.getName());         // обновляем поля Name
+            client.setName(updateClient.getName());                 // обновляем поля Name
             client.setPassport(updateClient.getPassport());         // обновляем поля passport
             client.setPhone(updateClient.getPhone());               // обновляем поля phone
             client.setEmail(updateClient.getEmail());               // обновляем поле email

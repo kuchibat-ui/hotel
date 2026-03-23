@@ -72,6 +72,8 @@ public class ClientService {
                 int rows = ps.executeUpdate();
                 if (rows > 0) {
                     System.out.println("клиент " + lastname + " " + name + " успешно добавлен в БД");
+                    Client client = new Client(lastname,name,email,passport,phone);
+                    clientRepository.save(client);
                 } else {
                     System.out.println(" клиент не добавлен в БД");
                 }

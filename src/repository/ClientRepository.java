@@ -6,25 +6,17 @@ package repository;
 // ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ
 
 import model.Client;
-
-
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import static repository.DBconnect.getConnection;
-
 public class ClientRepository {
-    List<Client> clients = new ArrayList<>();
+
 
     /**
-     * метод добавляет клиента  в БД     *
-     *
+     * метод добавляет клиента  в БД        *
      * @param client
      * @return
      */
-    public Client saveRepo(Client client) {
+    public void saveRepo(Client client) {
         String query = "INSERT INTO clients (lastname,name,email,passport,phone) VALUES (?,?,?,?,?)";
         try {
             Connection conn = getConnection();
@@ -38,38 +30,30 @@ public class ClientRepository {
                 int rows = ps.executeUpdate();
                 if (rows > 0) {
                     System.out.println("клиент " + client.getLastname() + " " + client.getName() + " успешно добавлен в БД");
-
                 } else {
                     System.out.println(" клиент не добавлен в БД");
                 }
-
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
-        clients.add(client);
-        return client;
     }
 
 
-    public void deleteClient(Client client) {
-        clients.remove(client);
-    }
-
-    // поиск чувака по id
+    /**
+     * поиск клиента по id
+     * @param id
+     * @throws SQLException
+     */
     public void findById(int id) throws SQLException {
         String query = "SELECT * FROM clients WHERE id=? ";
         try {
             Connection conn = DBconnect.getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setInt(1, id);                  //подстановка параметра passport в запро1с
+            ps.setInt(1, id);                  //подстановка параметра id в запро1с
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-
                 String lastname = rs.getString("lastname");
                 String name = rs.getString("name");
                 String email = rs.getString("email");
@@ -82,21 +66,20 @@ public class ClientRepository {
     }
 
     // поиск чуваков по имени
-    public Optional<Client> findByLastname(String namePart) {
-        return clients.stream()
-                .filter(client -> client.getLastname().toLowerCase().contains(namePart.toLowerCase()))
-                .findFirst();
-    }
+//    public Optional<Client> findByLastname(String namePart) {
+//        return clients.stream()
+//                .filter(client -> client.getLastname().toLowerCase().contains(namePart.toLowerCase()))
+//                .findFirst();
+//    }
 
-    ;
+
 
     // поиск чувака по телефону
-    public Optional<Client> findBuPhone(String phone) throws SQLException {
-
-        String query = "SELECT * FROM clients WHILE phone=? ";
+    public void findByPhone(String phone) throws SQLException {
+        String query = "SELECT * FROM clients WHERE phone=? ";
         Connection conn = getConnection();
         Statement st = conn.createStatement();
-        PreparedStatement ps = conn.prepareStatement("clients");
+        PreparedStatement ps = conn.prepareStatement(query);
         ps.setString(1, phone);                  //подстановка параметра phone в запрос
         ResultSet rs = ps.executeQuery();
 
@@ -109,12 +92,9 @@ public class ClientRepository {
 
             System.out.printf("\nID: %d,lastname: %s, name %s,  Email: %s, Passport: %s\n", id, lastname, name, email, pass);
         }
-
-
-        return clients.stream()
-                .filter(client -> client.getPhone().equals(phone))
-                .findFirst();
     }
+
+
 
     /**
      * поиск чувака по паспорту
@@ -141,7 +121,10 @@ public class ClientRepository {
     }
 
 
-    // удаляет чувака по id
+    /**
+     * УДАЛЯЕТ КЛИЕНТА ПО ID
+     * @param id
+     */
     public void delete(int id) {
         String query = "DELETE FROM clients WHERE id = ?";
         try {
@@ -151,21 +134,16 @@ public class ClientRepository {
             ps.executeUpdate();
             System.out.println("удалена строка " + id);
 
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    //вывести весь список clients
-    public ArrayList<Client> getAllClients() {
-        return new ArrayList<>(clients);
-    }
+
 
 
     /**
-     * получить все данные клиентов из базы данных     *
-     *
+     * получить все данные клиентов из базы данных        *
      * @return List
      */
     public void findAll() throws SQLException {
@@ -176,9 +154,9 @@ public class ClientRepository {
             ResultSet rs = st.executeQuery(query);
 
             while (rs.next()) {
-                String lastname = rs.getString("lastname");
                 String name = rs.getString("name");
-                System.out.printf("\n lastname: %s, name: %s\n", lastname, name);
+                String lastname = rs.getString("lastname");
+                System.out.printf("\n lastname: %s, name: %s\n", name, lastname);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -186,26 +164,25 @@ public class ClientRepository {
 
     }
 
-
+    /**
+     * удаление клиента по фамилии
+     * @param lastname
+     */
     public void deleteByLastname(String lastname) {
         String query = "DELETE FROM clients WHERE lastname = ?";
         try {
             Connection conn = DBconnect.getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, lastname);                  //подстановка параметра passport в запро1с
+            ps.setString(1, lastname);  //подстановка параметра lastname в запрос
             ps.executeUpdate();
             System.out.println("удален клиент из базы данных " + lastname);
-
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    //вывести весь список clients
-    public ArrayList<Client> getAllClient() {
-        return new ArrayList<>(clients);
-    }
+
 
 
 //    public boolean update(Client updateClient) throws SQLException {

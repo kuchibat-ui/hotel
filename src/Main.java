@@ -12,7 +12,7 @@ public class Main {
     static RoomService roomService = new RoomService();
     static ClientService clientService = new ClientService();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
         while (true) {
             printMainMenu();
@@ -27,11 +27,11 @@ public class Main {
                 case 3:
                     manageBooking();
                     break;
+                case 0:
+                    return;
             }
         }
     }
-
-
 
 
     private static void printMainMenu() {
@@ -47,13 +47,17 @@ public class Main {
         System.out.println("===============================");
     }
 
-    private static void manageRooms() {
+    private static void manageRooms() throws SQLException {
         while (true) {
+            System.out.println("==============================");
             System.out.println("\n--- УПРАВЛЕНИЕ НОМЕРАМИ ---");
+            System.out.println("==============================");
             System.out.println("1. Показать все номера");
             System.out.println("2. Добавить номер");
-            System.out.println("...");
-            System.out.println("0. Назад");
+            System.out.println("3. Удалить номер");
+            System.out.println("4. Отредактировать номер");
+            System.out.println("0. НАЗАД");
+            System.out.println("==============================");
             int choice = scanner.nextInt();
 
             switch (choice) {
@@ -61,11 +65,20 @@ public class Main {
                     roomService.printAllRooms();
                     break;
                 case 2:
-                    roomService.addRoom("11", "11", 222);
+                    roomService.addRoom();
+                    break;
+
+                case 3:
+                    roomService.deleteRoom();
+                    break;
+
+                case 4:
+                    roomService.updateRoom();
+                    break;
                 case 0:
                     return;
                 default:
-                    System.out.println("Такая функция ещё не реализована");
+
             }
         }
     }
@@ -97,30 +110,50 @@ public class Main {
                 break;
             case 4:
                 clientService.printToAllClients();
-                case 5:
-                    manageDeleteClient();
-                    break;
+            case 5:
+                manageDeleteClient();
+                break;
 
             case 0:
                 return;
             default:
-                System.out.println("Такая функция ещё не реализована");
+
         }
     }
 
     private static void manageDeleteClient() {
         System.out.println("1. Удалить клиента по ID ");
         System.out.println("2. Удалить клиента по фамилии ");
-        int choice =scanner.nextInt();
-        switch (choice){
+        System.out.println("0. НАЗАД");
+        int choice = scanner.nextInt();
+        switch (choice) {
             case 1:
                 clientService.removeById();
+                break;
             case 2:
                 clientService.removeByLastname();
+                break;
+            case 0:
+                return;
+            default:
+
         }
     }
 
-
+    /* todo НУЖНО ДОДЕЛАТЬ*/
     private static void manageBooking() {
+        System.out.println("\n===============================");
+        System.out.println("     УПРАВЛЕНИЯ БРОНИРОВАНИЯ ");
+        System.out.println("===============================");
+        System.out.println("1. Добавить бронирование");
+        System.out.println("2. Найти бронирование");
+        System.out.println("3. Найти бронирование");
+        System.out.println("4. Вывести все бронирования");
+        System.out.println("5. Удалить бронирование ");
+        System.out.println("5. Статистика");
+        System.out.println("0. Выход");
+        System.out.println("===============================");
+        int choice = scanner.nextInt();
+
     }
 }

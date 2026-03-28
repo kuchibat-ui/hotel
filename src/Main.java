@@ -84,7 +84,7 @@ public class Main {
     }
 
 
-    private static void manageClients() {
+    private static void manageClients() throws SQLException {
         System.out.println("\n===============================");
         System.out.println("     УПРАВЛЕНИЯ КЛИЕНТАМИ");
         System.out.println("===============================");
@@ -121,7 +121,7 @@ public class Main {
         }
     }
 
-    private static void manageDeleteClient() {
+    private static void manageDeleteClient() throws SQLException {
         System.out.println("1. Удалить клиента по ID ");
         System.out.println("2. Удалить клиента по фамилии ");
         System.out.println("0. НАЗАД");

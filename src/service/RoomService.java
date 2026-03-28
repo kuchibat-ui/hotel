@@ -18,7 +18,7 @@ public class RoomService {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите номер комнаты: ");
         String roomNumber = scanner.nextLine();
-        boolean isPresent = roomRepository.isRoomNumber(roomNumber);
+        boolean isPresent = roomRepository.existingRoomNumber(roomNumber);
         if (isPresent == true) {
             System.out.println("Ошибка: Комната с таким номером уже существует!");
         } else {

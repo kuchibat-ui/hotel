@@ -40,12 +40,8 @@ public class RoomRepository {
      *
      * @return возвращает Room если id есть в списке rooms
      */
-//    public Optional<Room> findById(int id) {    // метод для поиска комнаты по id
-//        return rooms.stream()                   // запускаем stream по списку rooms
-//                .filter((room) -> room.getId() == id)   // в filter сравниваем id который пришел  id комнаты
-//                .findFirst();                   // находит первый подходящий id
-//    }
-    public boolean isRoomNumber(String roomNumber) throws SQLException {
+
+    public boolean existingRoomNumber(String roomNumber) throws SQLException {
         String query = "SELECT * FROM room WHERE roomnumber = ?";
         try (
                 Connection conn = getConnection();
@@ -54,8 +50,9 @@ public class RoomRepository {
             try (ResultSet rs = ps.executeQuery()) {                      //executeQuery() -запрос на чтение данных из БД.
                                                                           // ResultSet -набор данных полученных из БД
                                                                           // Возвращает ResultQuery.
-                return rs.next();                                         //если есть такая комната вернуть true
-            }
+                return rs.next();                                         //если есть такая комната вернуть true            }
+         // ps,conn закрыты автоматом так как обрабатывались исключением
+
         } catch (SQLException e){
             e.printStackTrace();
             return false;

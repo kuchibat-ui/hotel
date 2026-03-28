@@ -47,7 +47,7 @@ public class ClientService {
     /**
      * Метод добавляет нового клиента
      */
-    public void save() {
+    public void save() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("введите имя:");
         String name = scanner.nextLine();
@@ -70,18 +70,14 @@ public class ClientService {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите номер паспорта клиента: ");
         String passport = scanner.nextLine();
-        try {
             clientRepository.findByPass(passport);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 
     /**
      * метод для поиска клиента по id
      */
-    public void findById(){
+    public void findById() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите номер клиента: ");
         String idClient = scanner.nextLine();
@@ -104,7 +100,7 @@ public class ClientService {
     /**
      * удаление клиента по ID
      */
-    public void removeById(){
+    public void removeById() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите ID клиента ");
         String id1 =scanner.nextLine();
@@ -115,7 +111,7 @@ public class ClientService {
     /**
      * удаление клиента по Фамилии
      */
-    public void removeByLastname(){
+    public void removeByLastname() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите фамилию ");
         String lastName = scanner.nextLine();

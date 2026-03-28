@@ -86,11 +86,8 @@ public class ClientService {
         System.out.println("Введите номер клиента: ");
         String idClient = scanner.nextLine();
         int id = Integer.parseInt(idClient) ;
-        try {
             clientRepository.findById(id);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     /**

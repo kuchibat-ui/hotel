@@ -18,7 +18,7 @@ public class RoomService {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите номер комнаты: ");
         String roomNumber = scanner.nextLine();
-        boolean isPresent = roomRepository.findByRoomNumber(roomNumber);
+        boolean isPresent = roomRepository.isRoomNumber(roomNumber);
         if (isPresent == true) {
             System.out.println("Ошибка: Комната с таким номером уже существует!");
         } else {
@@ -33,13 +33,13 @@ public class RoomService {
     }
 
 
-    public void printAllRooms() {
+    public void printAllRooms() throws SQLException {
         System.out.println("показать все номера");
         roomRepository.showRooms();
     }
 
 
-    public void deleteRoom() {
+    public void deleteRoom() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите ID комнаты ");
         String id1 = scanner.nextLine();
@@ -52,7 +52,7 @@ public class RoomService {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите номер комнаты: ");
         String roomNumber = scanner.nextLine();
-        boolean isPresent = roomRepository.findByRoomNumber(roomNumber);
+        boolean isPresent = roomRepository.isRoomNumber(roomNumber);
         if (isPresent == true) {
             System.out.println("Сменить номер комнаты на: ");
             String num = scanner.nextLine();

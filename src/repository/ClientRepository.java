@@ -61,7 +61,7 @@ public class ClientRepository {
                 System.out.printf("\nlastname: %s, name %s,  Email: %s, Passport: %s\n", lastname, name, email, pass);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("нет такого клиента");
         }
     }
 

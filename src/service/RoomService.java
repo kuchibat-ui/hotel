@@ -52,7 +52,7 @@ public class RoomService {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите номер комнаты: ");
         String roomNumber = scanner.nextLine();
-        boolean isPresent = roomRepository.isRoomNumber(roomNumber);
+        boolean isPresent = roomRepository.existingRoomNumber(roomNumber);
         if (isPresent == true) {
             System.out.println("Сменить номер комнаты на: ");
             String num = scanner.nextLine();
@@ -69,5 +69,14 @@ public class RoomService {
             System.out.println("Ошибка: Комната с таким номером НЕ существует!");
 
         }
+    }
+
+    public void searchbyNumberRoom() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите номер комнаты ");
+        String number = scanner.nextLine();
+        int id = Integer.parseInt(number);
+       Room room = roomRepository.searchByNumber(number);
+        System.out.println(room);
     }
 }

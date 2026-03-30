@@ -11,6 +11,7 @@ import model.Client;
 import repository.ClientRepository;
 
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ClientService {
@@ -47,21 +48,29 @@ public class ClientService {
     /**
      * Метод добавляет нового клиента
      */
-    public void save() throws SQLException {
+    public void addClient() throws SQLException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("введите имя:");
-        String name = scanner.nextLine();
-        System.out.println("введите фамилию:");
-        String lastname = scanner.nextLine();
         System.out.println("введите емайл:");
         String email = scanner.nextLine();
-        System.out.println("введите паспорт:");
-        String passport = scanner.nextLine();
-        System.out.println("введите телефон:");
-        String phone = scanner.nextLine();
-        Client client = new Client(lastname, name, email, passport, phone);
-        clientRepository.saveRepo(client);
+        boolean isMail = clientRepository.existingEmail(email);
+
+        if (!isMail) {
+            System.out.println("введите имя:");
+            String name = scanner.nextLine();
+            System.out.println("введите фамилию:");
+            String lastname = scanner.nextLine();
+            System.out.println("введите паспорт:");
+            String passport = scanner.nextLine();
+            System.out.println("введите телефон:");
+            String phone = scanner.nextLine();
+            Client client = new Client(lastname, name, email, passport, phone);
+            clientRepository.saveRepo(client);
+        } else {
+            System.out.println("клиент с таким e-mail есть в базе данных и ему положена GreenCard");
+        }
     }
+
+
 
     /**
      * метод по поиску клиента по паспорту
@@ -82,7 +91,8 @@ public class ClientService {
         System.out.println("Введите номер клиента: ");
         String idClient = scanner.nextLine();
         int id = Integer.parseInt(idClient) ;
-            clientRepository.findById(id);
+           Client client = clientRepository.findById(id);
+        System.out.println(client);
 
     }
 

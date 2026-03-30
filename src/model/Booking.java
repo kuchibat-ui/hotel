@@ -5,7 +5,7 @@ import java.time.temporal.ChronoUnit;
 
 public class Booking{
 
-        private static int nextId = 1;
+
         private int id;
         private Client client;
         private Room room;
@@ -16,6 +16,7 @@ public class Booking{
         private String status;
 
         public Booking(Client client, Room room, LocalDate checkInDate, LocalDate CheckOutDate, int guestsCount) {
+            this.id = id;
             this.client = client;
             this.room = room;
             this.checkInDate = checkInDate;
@@ -35,6 +36,18 @@ public class Booking{
 
     public Room getRoom() {
         return room;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Client getClient() {
+        return client;
     }
 
     private double calculateTotalPrice() {

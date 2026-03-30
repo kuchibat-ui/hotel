@@ -2,13 +2,14 @@ package model;
 
 public class Client {
 
-    private static int nextId = 1;
+
     private int id;
     private String name;
     private String lastname;
     private String phone;
     private String passport;
     private String email;
+    private boolean checkIn;
 
     public Client( String lastname, String name, String email,  String passport, String phone) {
         this.lastname = lastname;
@@ -16,7 +17,11 @@ public class Client {
         this.name = name;
         this.passport = passport;
         this.phone = phone;
-        this.id = nextId++;
+        this.id = id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -61,5 +66,18 @@ public class Client {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "" +
+
+                ", id=" + id +
+                ", name:'" + name + '\'' +
+                ", lastname:'" + lastname + '\'' +
+                ", phone:'" + phone + '\'' +
+                ", passport:'" + passport + '\'' +
+                ", email:" + email + '\''
+                ;
     }
 }

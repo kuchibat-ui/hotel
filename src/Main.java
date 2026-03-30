@@ -1,5 +1,6 @@
 import model.Client;
 import repository.DBconnect;
+import service.BookingService;
 import service.ClientService;
 import service.RoomService;
 
@@ -11,6 +12,7 @@ public class Main {
     static Scanner scanner = new Scanner(System.in);
     static RoomService roomService = new RoomService();
     static ClientService clientService = new ClientService();
+    static BookingService bookingService = new BookingService();
 
     public static void main(String[] args) throws SQLException {
 
@@ -56,6 +58,7 @@ public class Main {
             System.out.println("2. Добавить номер");
             System.out.println("3. Удалить номер");
             System.out.println("4. Отредактировать номер");
+            System.out.println("5. Найти комнату по номеру");
             System.out.println("0. НАЗАД");
             System.out.println("==============================");
             int choice = scanner.nextInt();
@@ -75,6 +78,11 @@ public class Main {
                 case 4:
                     roomService.updateRoom();
                     break;
+
+                case 5:
+                    roomService.searchbyNumberRoom();
+                    break;
+
                 case 0:
                     return;
                 default:
@@ -100,7 +108,7 @@ public class Main {
 
         switch (choice) {
             case 1:
-                clientService.save();
+                clientService.addClient();
                 break;
             case 2:
                 clientService.findByPass();
@@ -141,7 +149,7 @@ public class Main {
     }
 
     /* todo НУЖНО ДОДЕЛАТЬ*/
-    private static void manageBooking() {
+    private static void manageBooking() throws SQLException {
         System.out.println("\n===============================");
         System.out.println("     УПРАВЛЕНИЯ БРОНИРОВАНИЯ ");
         System.out.println("===============================");
@@ -153,7 +161,22 @@ public class Main {
         System.out.println("5. Статистика");
         System.out.println("0. Выход");
         System.out.println("===============================");
-        int choice = scanner.nextInt();
 
+
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1:
+                bookingService.addBooking();
+
+                break;
+            case 2:
+                clientService.removeByLastname();
+                break;
+            case 0:
+                return;
+            default:
+
+        }
     }
+
 }

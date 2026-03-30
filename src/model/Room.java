@@ -3,7 +3,7 @@ package model;
 import java.util.Objects;
 
 public class Room {
-    private static int nextId = 1;
+
     private int id;
     private String roomNumber;
     private String type;
@@ -11,7 +11,7 @@ public class Room {
     private  double pricePerNight;
 
     public Room(String roomNumber, String type, double pricePerNight) {
-        this.id = nextId++;
+        this.id = id;
         this.roomNumber = roomNumber;
         this.type = type;
         this.pricePerNight = pricePerNight;
@@ -19,6 +19,10 @@ public class Room {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getRoomNumber() {
@@ -64,5 +68,16 @@ public class Room {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", roomNumber='" + roomNumber + '\'' +
+                ", type='" + type + '\'' +
+                ", status='" + status + '\'' +
+                ", pricePerNight=" + pricePerNight +
+                '}';
     }
 }

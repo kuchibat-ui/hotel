@@ -170,7 +170,7 @@ public class Main {
 
                 break;
             case 2:
-                clientService.removeByLastname();
+                bookingService.findBooking();
                 break;
             case 0:
                 return;

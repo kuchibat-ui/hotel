@@ -13,7 +13,7 @@ import java.util.Optional;
 import static repository.DBconnect.getConnection;
 
 public class BookingRepository {
-
+ClientRepository clientRepository;
     Connection conn;
 
     {
@@ -91,7 +91,45 @@ public class BookingRepository {
 
         }
 
-        // взамиодействия клиента и комнаты
+    public void findById(int id) {
+        String query = "SELECT * FROM bookings WHERE id=? ";
+
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, id);                  //подстановка параметра id в запро1с
+            ResultSet rs = ps.executeQuery();               //executeQuery() -запрос на чтение данных из БД.
+                                                           // ResultSet -набор данных полученных из БД
+                                                           // Возвращает ResultQuery.
+            if (rs.next()) {
+                int roomId = rs.getInt("room_id");
+                int clientId = rs.getInt("client_id");
+                java.util.Date dateIn = rs.getDate("check_in_date");
+                java.util.Date dateOut = rs.getDate("check_out_date");
+
+
+                System.out.printf("id комнаты: %d, id гостя: %d, дата въезда: %s, дата выезда: %s", roomId,clientId,dateIn,dateOut);
+//                System.out.println(clientRepository.findById(id));
+
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Ошибка: такого номера в гостинице нет " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    System.err.println("Ошибка при закрытии: " + e.getMessage());
+                }
+            }
+
+        }
+
+    }
+
+    // взамиодействия клиента и комнаты
         // условия заселения
         // комната свободна или на ремонте, клиент еще не заселен
 

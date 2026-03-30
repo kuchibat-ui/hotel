@@ -48,7 +48,16 @@ public static   int count;
         checkInRoom(client,room,inData,outData);
 
     }
-    // * todo НУЖНО ДОДЕЛАТЬ, НЕ ЗНАЮ КАК */
+
+    /**
+     * вспомогательный метод для проверки данных перед добавления в базу бронирования
+     * @param client
+     * @param room
+     * @param checkInDate
+     * @param checkOutDate
+     * @return true/fslse добавить/отказать
+     * @throws SQLException
+     */
     public boolean checkInRoom(Client client, Room room, LocalDate checkInDate, LocalDate checkOutDate) throws SQLException {
         if (client == null || room == null || checkInDate == null || checkOutDate == null) {
             System.out.println("1");
@@ -86,6 +95,24 @@ public static   int count;
 
         bookingRepository.save(booking);
         return true;
+    }
+
+
+    /**
+     * метод для поиска бронирования по id
+     */
+    public void findBooking() {
+
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Введите Id бронирования: ");
+            String idBooking = scanner.nextLine();
+            int id = Integer.parseInt(idBooking) ;
+//            Client client = clientRepository.findById(id);
+//            System.out.println(client);
+         bookingRepository.findById(id);
+
+
     }
 }
 

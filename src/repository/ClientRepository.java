@@ -308,7 +308,7 @@ public class ClientRepository {
             }
 
         } catch (SQLException e) {
-            System.err.println("Ошибка: такого номера в гостинице нет " + e.getMessage());
+            System.err.println("Ошибка: такого гостя в гостинице нет " + e.getMessage());
             e.printStackTrace();
         } finally {
             if (ps != null) {

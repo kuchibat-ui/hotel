@@ -25,15 +25,15 @@ public class BookingRepository {
     }
 
 
-    public boolean isRoomOccupied(int id, LocalDate checkInDate, LocalDate checkOutDate) throws SQLException {
+    public boolean isRoomOccupied(int id, LocalDate checkInDate, LocalDate checkOutDate) {
         String query = "SELECT COUNT(*) FROM bookings " +                    //запрос в базу данных
                 "WHERE room_id = ? " +
                 "AND status != 'CANCELLED' " +
                 "AND check_in_date <= ? AND check_out_date > ?";
 
-        PreparedStatement ps;
-
-            ps = conn.prepareStatement(query);                       // вставка запроса и безопасность от SQL инъекций
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement(query);
             ps.setInt(1, id);
             ps.setDate(2, Date.valueOf(checkOutDate));
             ps.setDate(3, Date.valueOf(checkInDate));
@@ -41,9 +41,23 @@ public class BookingRepository {
             if (rs.next()) {
                 return rs.getInt(1) > 0;       //rs.getInt(1) вернет Int количество  совпадедний >0 (false/true)
             }
-            return false;
+            return false;                   // вставка запроса и безопасность от SQL инъекций
+        } catch (SQLException e) {
+            System.err.println("Ошибка при сохранении бронирования: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    System.err.println("Ошибка при закрытии: " + e.getMessage());
 
+                }
+            }
+        }
+        return false;
     }
+
 
     public void save(Booking booking)  {
         String query = "INSERT INTO bookings (room_id,client_id,check_in_date,check_out_date) VALUES (?,?,?,?)";
@@ -70,10 +84,11 @@ public class BookingRepository {
                    ps.close();
                } catch (SQLException e) {
                    System.err.println("Ошибка при закрытии: " + e.getMessage());
-
                    }
                }
+
            }
+
         }
 
         // взамиодействия клиента и комнаты

@@ -71,7 +71,7 @@ public static   int count;
             return false;
         }
 
-        if (bookingRepository.isRoomOccupied(room.getId(),checkInDate,checkOutDate)){
+        if (!bookingRepository.isRoomOccupied(room.getId(),checkInDate,checkOutDate)){
             System.out.println("ошибка: комната на эти дни забронирована");
             return  false;
         }
